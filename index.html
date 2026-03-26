@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Desenvolvimento Web Tarefa 5</title>
+  <meta name="description" content="Projeto didático: demonstrações de JavaScript (DOM, eventos, arrays, timers, localStorage, CRUD, drag/drop, galeria, to-do, estatísticas)." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <header class="site-header fixed-header">
+    <div class="header-wrap">
+      <div class="brand">
+        <h1 id="page-title">Tarefa 5</h1>
+      </div>
+      <div class="header-actions">
+        <div class="theme-toggle">
+          <button id="btn-toggle-theme" class="btn small">Alternar tema</button>
+        </div>
+        <nav class="quick-actions" aria-label="Ações rápidas">
+          <button id="btn-alert" class="btn">alert()</button>
+          <button id="btn-prompt" class="btn">prompt()</button>
+          <button id="btn-confirm" class="btn">confirm()</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav fixed-nav">
+    <div class="nav-wrap">
+      <button class="nav-arrow nav-arrow-left" aria-label="Navegar para esquerda">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      
+      <div class="nav-container">
+        <ul class="nav-list">
+          <li><a href="#intro-section">Início</a></li>
+          <li><a href="#form-section">Formulário</a></li>
+          <li><a href="#dom-section">DOM</a></li>
+          <li><a href="#arrays-section">Arrays</a></li>
+          <li><a href="#timers-section">Timers</a></li>
+          <li><a href="#date-section">Datas</a></li>
+          <li><a href="#animation-section">Animações</a></li>
+          <li><a href="#storage-section">Storage</a></li>
+          <li><a href="#crud-section">CRUD</a></li>
+          <li><a href="#filter-section">Filtro</a></li>
+          <li><a href="#drag-section">Drag & Drop</a></li>
+          <li><a href="#gallery-section">Galeria</a></li>
+          <li><a href="#todo-section">To-Do</a></li>
+          <li><a href="#progress-section">Progresso</a></li>
+          <li><a href="#stats-section">Estatísticas</a></li>
+          <li><a href="#debug-section">Depuração</a></li>
+        </ul>
+      </div>
+      
+      <button class="nav-arrow nav-arrow-right" aria-label="Navegar para direita">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="layout">
+      <main class="main">
+      
+      <section id="intro-section" class="card section">
+        <h2>Bem-vindo ao Projeto Demo JavaScript</h2>
+        <p>Este projeto demonstra várias funcionalidades do JavaScript moderno em um único local. Explore as diferentes seções para aprender sobre manipulação do DOM, eventos, arrays, timers, armazenamento local e muito mais.</p>
+        <div class="feature-highlights">
+          <div class="feature">
+            <h3>Interativo</h3>
+            <p>Todos os componentes respondem às suas ações</p>
+          </div>
+          <div class="feature">
+            <h3>Didático</h3>
+            <p>Cada seção inclui explicações claras</p>
+          </div>
+          <div class="feature">
+            <h3>Responsivo</h3>
+            <p>Funciona em dispositivos móveis e desktop</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="form-section" class="card section">
+        <h2>Formulário — Validação</h2>
+        <p>Validação simples: nome, e-mail e idade. Resultado exibido sem recarregar a página.</p>
+        <form id="demo-form" class="demo-form" novalidate>
+          <div class="form-row">
+            <label for="input-name">Nome completo</label>
+            <input id="input-name" name="name" type="text" placeholder="Seu nome completo" required />
+          </div>
+          <div class="form-row">
+            <label for="input-email">E-mail</label>
+            <input id="input-email" name="email" type="email" placeholder="email@exemplo.com" required />
+          </div>
+          <div class="form-row small">
+            <label for="input-age">Idade</label>
+            <input id="input-age" name="age" type="number" min="1" max="120" placeholder="18" required />
+          </div>
+          <div class="form-actions">
+            <button id="btn-submit" type="submit" class="btn primary">Enviar</button>
+            <button id="btn-reset" type="reset" class="btn">Limpar</button>
+            <button id="btn-validate-only" type="button" class="btn">Validar agora</button>
+          </div>
+          <div id="form-messages" class="form-messages" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section id="dom-section" class="card section">
+        <h2>Manipulação do DOM</h2>
+        <p>Adicione, edite, destaque e remova itens com ações dinâmicas.</p>
+        <div class="controls">
+          <input id="new-item-text" placeholder="Texto do novo item" />
+          <button id="btn-add-item" class="btn">Adicionar item</button>
+          <button id="btn-clear-items" class="btn">Limpar itens</button>
+          <button id="btn-export-items" class="btn">Exportar itens (JSON)</button>
+        </div>
+        <ul id="items-list" class="items-list" aria-live="polite"></ul>
+      </section>
+
+      <section id="arrays-section" class="card section">
+        <h2>Arrays — map, filter e reduce</h2>
+        <p>Adicione valores (texto ou números). Use map/filter/reduce para manipular.</p>
+        <div class="controls grid-2">
+          <input id="array-item" placeholder="Ex: 10 ou ola" />
+          <div class="inline-actions">
+            <button id="btn-array-add" class="btn">Adicionar</button>
+            <button id="btn-array-remove" class="btn">Remover último</button>
+            <button id="btn-array-map" class="btn">map() → dobrar números</button>
+            <button id="btn-array-filter" class="btn">filter() → manter pares</button>
+            <button id="btn-array-reduce" class="btn">reduce() → soma (num)</button>
+          </div>
+        </div>
+        <pre id="array-output" class="code-block" aria-live="polite">[]</pre>
+      </section>
+
+      <section id="timers-section" class="card section">
+        <h2>Timers, Aleatoriedade e Contador</h2>
+        <p>setTimeout, setInterval e Math.random com saída visível.</p>
+        <div class="controls">
+          <button id="btn-timeout" class="btn">setTimeout (2s)</button>
+          <button id="btn-interval-start" class="btn">Iniciar intervalo</button>
+          <button id="btn-interval-stop" class="btn">Parar intervalo</button>
+          <button id="btn-random" class="btn">Gerar aleatório</button>
+        </div>
+        <div id="timer-output" class="status small">Pronto</div>
+      </section>
+
+      <section id="date-section" class="card section">
+        <h2>Datas — Comparações e Soma</h2>
+        <p>Mostra data atual, soma dias e compara datas escolhidas.</p>
+        <div class="controls grid-3">
+          <button id="btn-now" class="btn">Agora</button>
+          <button id="btn-add-10days" class="btn">+10 dias</button>
+          <input id="date-compare" type="date" />
+          <button id="btn-compare-date" class="btn">Comparar com hoje</button>
+        </div>
+        <div id="date-output" class="status small">—</div>
+      </section>
+
+      <section id="animation-section" class="card section">
+        <h2>Animações e Toggle</h2>
+        <p>Alterna tema, aplica animação e destaca elementos com classes.</p>
+        <div class="controls">
+          <button id="btn-animate" class="btn">Animação</button>
+          <button id="btn-box-toggle" class="btn">Toggle destaque</button>
+        </div>
+        <div id="box" class="demo-box">Caixa de demonstração</div>
+      </section>
+
+      <section id="storage-section" class="card section">
+        <h2>localStorage</h2>
+        <p>Salvar, ler e remover dados do armazenamento local do navegador.</p>
+        <div class="controls grid-2">
+          <input id="storage-key" placeholder="chave (ex: demoKey)" value="demoKey" />
+          <input id="storage-value" placeholder="valor a salvar" />
+        </div>
+        <div class="controls">
+          <button id="btn-storage-save" class="btn">Salvar</button>
+          <button id="btn-storage-read" class="btn">Ler</button>
+          <button id="btn-storage-clear" class="btn">Remover</button>
+        </div>
+        <div id="storage-output" class="status small">Nenhum valor</div>
+      </section>
+
+      <section id="crud-section" class="card section">
+        <h2>CRUD básico — Usuários</h2>
+        <p>Adicionar, editar e remover usuários (estado em memória).</p>
+        <div class="controls grid-3">
+          <input id="user-name" placeholder="Nome" />
+          <input id="user-age" type="number" placeholder="Idade" />
+          <button id="btn-user-add" class="btn">Adicionar</button>
+        </div>
+        <table id="users-table" class="users-table" aria-live="polite">
+          <thead><tr><th>Nome</th><th>Idade</th><th>Ações</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="filter-section" class="card section">
+        <h2>Filtro e Busca (debounce)</h2>
+        <p>Filtre os itens adicionados por texto com debounce para reduzir leituras.</p>
+        <div class="controls">
+          <input id="filter-input" placeholder="Filtrar itens..." />
+          <button id="btn-filter-clear" class="btn">Limpar filtro</button>
+        </div>
+        <div id="filter-status" class="status small">Nenhum filtro</div>
+      </section>
+
+      <section id="selection-section" class="card section">
+        <h2>Detecção de Seleção</h2>
+        <p>Selecione texto nesta página e veja o conteúdo capturado nos logs.</p>
+        <p id="selectable-text">Selecione qualquer parte deste parágrafo para testar a detecção de seleção no painel de logs.</p>
+      </section>
+
+      <section id="drag-section" class="card section">
+        <h2>Drag & Drop</h2>
+        <p>Arraste itens da lista Fonte para o Destino. O destino permite remoção.</p>
+        <div class="drag-area grid-2">
+          <div>
+            <h3>Fonte</h3>
+            <ul id="drag-source" class="drag-list">
+              <li draggable="true" data-id="d1">Drag 1</li>
+              <li draggable="true" data-id="d2">Drag 2</li>
+              <li draggable="true" data-id="d3">Drag 3</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Destino</h3>
+            <ul id="drag-target" class="drag-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery-section" class="card section">
+        <h2>Galeria Interativa</h2>
+        <p>Mini galeria: clique em miniaturas para ver a imagem ampliada; navegue com setas.</p>
+        <div class="gallery">
+          <div class="thumbs">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='160'><rect width='100%' height='100%' fill='%230f766e'/><text x='50%' y='50%' fill='white' font-size='20' dominant-baseline='middle' text-anchor='middle'>Imagem 1</text></svg>" alt="img1" class="thumb" data-src="1" />
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='160'><rect width='100%' height='100%' fill='%23115e59'/><text x='50%' y='50%' fill='white' font-size='20' dominant-baseline='middle' text-anchor='middle'>Imagem 2</text></svg>" alt="img2" class="thumb" data-src="2" />
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='160'><rect width='100%' height='100%' fill='%23063f3a'/><text x='50%' y='50%' fill='white' font-size='20' dominant-baseline='middle' text-anchor='middle'>Imagem 3</text></svg>" alt="img3" class="thumb" data-src="3" />
+          </div>
+          <div class="viewer">
+            <button id="gallery-prev" class="btn small">◀</button>
+            <div id="gallery-view" class="gallery-view" aria-live="polite">
+              <img id="gallery-image" src="" alt="visualização" />
+            </div>
+            <button id="gallery-next" class="btn small">▶</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="todo-section" class="card section">
+        <h2>To-Do / Notas Rápidas</h2>
+        <p>Adicione tarefas rápidas; marque como concluídas e salve em localStorage.</p>
+        <div class="controls">
+          <input id="todo-input" placeholder="Nova tarefa..." />
+          <button id="btn-todo-add" class="btn">Adicionar</button>
+          <button id="btn-todo-clear" class="btn">Limpar concluídas</button>
+          <button id="btn-todo-save" class="btn">Salvar</button>
+        </div>
+        <ul id="todo-list" class="todo-list"></ul>
+      </section>
+
+      <section id="progress-section" class="card section">
+        <h2>Contador com Barra de Progresso</h2>
+        <p>Inicie um contador e observe a barra de progresso animada.</p>
+        <div class="controls">
+          <input id="progress-duration" type="number" placeholder="Duração (s)" value="10" />
+          <button id="btn-progress-start" class="btn">Iniciar</button>
+          <button id="btn-progress-stop" class="btn">Parar</button>
+        </div>
+        <div class="progress-wrap">
+          <div id="progress-bar" class="progress-bar"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
+          <div id="progress-label" class="progress-label">0%</div>
+        </div>
+      </section>
+
+      <section id="stats-section" class="card section">
+        <h2>Estatísticas em Tempo Real</h2>
+        <p>Gerador simples de estatísticas com base nos arrays e usuários.</p>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-value" id="stat-items">0</div>
+            <div class="stat-label">Itens</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="stat-users">0</div>
+            <div class="stat-label">Usuários</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="stat-array-sum">0</div>
+            <div class="stat-label">Soma (num)</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="debug-section" class="card section">
+        <h2>Depuração</h2>
+        <p>Registre mensagens no console e no painel de logs.</p>
+        <div class="controls">
+          <button id="btn-log" class="btn">console.log()</button>
+          <button id="btn-warn" class="btn">console.warn()</button>
+          <button id="btn-error" class="btn">console.error()</button>
+          <button id="btn-clear-logs" class="btn">Limpar logs</button>
+        </div>
+        <pre id="debug-output" class="code-block">Logs aparecerão aqui</pre>
+      </section>
+
+      <section class="card section documentation">
+        <h2>Documentação Curta</h2>
+        <p>O projeto demonstra várias APIs do navegador sem dependências externas.</p>
+        
+        <h3>Funcionalidades Principais</h3>
+        <ul class="feature-list">
+          <li><strong>Manipulação do DOM:</strong> Adição, remoção e edição de elementos</li>
+          <li><strong>Eventos:</strong> Clique, arrastar, soltar, entrada de formulário</li>
+          <li><strong>Arrays:</strong> Operações com map, filter e reduce</li>
+          <li><strong>Timers:</strong> setTimeout, setInterval e Math.random</li>
+          <li><strong>Armazenamento:</strong> localStorage para persistência de dados</li>
+          <li><strong>Animações:</strong> Transições CSS e efeitos visuais</li>
+          <li><strong>CRUD:</strong> Operações Create, Read, Update, Delete</li>
+          <li><strong>Drag & Drop:</strong> API nativa de arrastar e soltar</li>
+          <li><strong>Galeria:</strong> Navegação por imagens com miniaturas</li>
+          <li><strong>To-Do:</strong> Lista de tarefas com persistência</li>
+          <li><strong>Progresso:</strong> Barra de progresso animada</li>
+          <li><strong>Estatísticas:</strong> Dados em tempo real</li>
+          <li><strong>Depuração:</strong> Painel de logs integrado</li>
+        </ul>
+        
+        <h3>Como Usar</h3>
+        <ol class="usage-steps">
+          <li>Abra o arquivo index.html em um navegador moderno</li>
+          <li>Navegue pelas diferentes seções usando o menu</li>
+          <li>Interaja com os controles em cada seção</li>
+          <li>Observe os resultados e logs em tempo real</li>
+          <li>Experimente alternar entre os temas claro e escuro</li>
+        </ol>
+        
+        <h3>Tecnologias Utilizadas</h3>
+        <div class="tech-badges">
+          <span class="tech-badge">HTML5</span>
+          <span class="tech-badge">CSS3</span>
+          <span class="tech-badge">JavaScript ES6+</span>
+          <span class="tech-badge">localStorage API</span>
+          <span class="tech-badge">Drag & Drop API</span>
+        </div>
+      </section>
+
+      </main>
+
+      <aside class="sidebar">
+        <div class="card">
+          <h3>Resumo</h3>
+          <ul class="summary-list">
+            <li>Itens: <span id="summary-items">0</span></li>
+            <li>Usuários: <span id="summary-users">0</span></li>
+            <li>LocalStorage: <span id="summary-storage">nenhum</span></li>
+            <li>Último status: <span id="summary-form">—</span></li>
+          </ul>
+          <div class="sidebar-actions">
+            <button id="btn-focus-name" class="btn">Focar Nome</button>
+            <button id="btn-export-all" class="btn">Exportar tudo</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Atalhos</h3>
+          <ol>
+            <li>Clique em "alert()" para alert simples</li>
+            <li>Use "Adicionar item" para testar DOM</li>
+            <li>Arraste elementos nas listas de Drag & Drop</li>
+            <li>Teste o filtro com debounce na seção de filtro</li>
+            <li>Experimente a galeria interativa</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Status do Sistema</h3>
+          <div class="system-status">
+            <div class="status-item">
+              <span class="status-label">JavaScript:</span>
+              <span class="status-value active">Ativo</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">localStorage:</span>
+              <span class="status-value active">Disponível</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Drag & Drop:</span>
+              <span class="status-value active">Suportado</span>
+            </div>
+            <div class="status-item">
+              <span class="status-label">Tema:</span>
+              <span class="status-value" id="theme-status">Claro</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-wrap">
+      <p>Projeto Demo JavaScript — Tema moderno — Gerado para atividade acadêmica</p>
+      <p>Professor: Deivison S. Takatu — Referências: MDN e material da disciplina</p>
+      <div class="footer-links">
+        <a href="#intro-section">Início</a>
+        <a href="#documentation">Documentação</a>
+        <button id="btn-back-to-top" class="btn-link">Voltar ao Topo</button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
